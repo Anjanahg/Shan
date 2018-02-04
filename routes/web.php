@@ -55,6 +55,10 @@ Route::get('/area/delete/{id}','AreaController@delete');
 ////////update an area////
 Route::get('/area/update/{id}','AreaController@update');
 Route::post('update_data_area','AreaController@update_data_area');
+Route::get('/newUserRegister','reportController@getnewUserRegister');
+Route::get('/gRequest','gRequestController@getnewRequests');
+Route::get('/totalGarbage','totalGarbageController@totalCollectedGaerbage');
+Route::get('/areaTotalGarbage','totalAreaGarbageController@areaGarbage');
 
 
 

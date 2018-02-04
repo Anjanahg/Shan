@@ -21,7 +21,7 @@ class CollectorController extends Controller
             ->select('collectors.password')
             ->where('password','=',$password)
             ->get();
-        error_log($password);
+
 
 
 if(!$cn->isEmpty()&&!$password->isEmpty()){
@@ -47,13 +47,64 @@ if(!$cn->isEmpty()&&!$password->isEmpty()){
     }
 
 
-    function Lplaces(Request $request){
-        $areaId=$request->areaId;
-        error_log($areaId);
-        $Lplaces=DB::select("SELECT `users`.`id`,`users`.`Lplace` FROM `order_requests`,`users` WHERE `state`=1 AND `order_requests`.`areaId`=".$areaId." AND `order_requests`.`uId`=`users`.`id`");
+    function sendLocations(Request $request)
+
+    {
+
+        $cId = $request->cId;
+
+        error_log($cId);
+        $areaIdArray = DB::table('collectors')
+            ->select('collectors.areaId')
+            ->where('id', '=', $cId)
+            ->get();
+        $areaId= object_get($areaIdArray[0],"areaId",null);
+
+
+        $Lplaces = DB::select("SELECT `order_requests`.`id`,`users`.`Lplace` FROM `order_requests`,`users` WHERE `state`=1 AND `order_requests`.`areaId`=" . $areaId . " AND `order_requests`.`uId`=`users`.`id`");
+
+       return $Lplaces;
+
+    }
+
+
+
+
+
+    function collectorSend(Request $request)
+
+    {
+
+        $organic = $request->organic;
+        $plastic = $request->plastic;
+        $paper = $request->paper;
+        $glass = $request->glass;
+        $metal = $request->metal;
+        $electronic = $request->electronic;
+        $requestId = $request->requestId;
+
+
+        DB::table('order_requests')
+            ->where('id', $requestId)
+            ->update([
+                'realOrganicQuantity' => $organic,
+                'realPlasticQuantity'=>$plastic,
+                'realPaperQuantity'=>$paper,
+                'realGlassQuantity'=>$glass,
+                'realMetalQuantity'=>$metal,
+                'realElectronicQuantity'=>$electronic,
+                'state'=>0]);
 
         return response()->json([
-            'Lplaces'=>$Lplaces
+            'error'=>false,
+            'message'=>"Success!"
         ]);
+
+
+
+
+
+
+
     }
 }

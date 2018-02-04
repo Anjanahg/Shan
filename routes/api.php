@@ -35,6 +35,10 @@ Route::post('/getLplaces','CollectorController@Lplaces');
 
 Route::post('/collectorLogin','CollectorController@Login');
 
+Route::post('/getLocations','CollectorController@sendLocations');
+
+Route::post('/collectorSend','CollectorController@collectorSend');
+
 
 
 
