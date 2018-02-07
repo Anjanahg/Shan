@@ -39,7 +39,7 @@ class UserController extends Controller
         }
         else {
 
-            error_log($request);
+
             //if any user does not existed with email then create new user
             //admin creates normal users
             //or he invites to users via email
@@ -123,6 +123,7 @@ class UserController extends Controller
 
 
     function Spinner(Request $request){
+
 
 
 

@@ -20,17 +20,17 @@ class CreateOrderRequestsTable extends Migration
             $table->increments('id');
             $table->timestamps();
 
-            $table->string('completedDate');
+            $table->string('completedDate')->nullable();
             $table->string('requestedDate');
             $table->string('state');
             $table->integer('uId');
 
-            $table->double('realOrganicQuantity');
-            $table->double('realPlasticQuantity');
-            $table->double('realPaperQuantity');
-            $table->double('realGlassQuantity');
-            $table->double('realMetalQuantity');
-            $table->double('realElectronicQuantity');
+            $table->double('realOrganicQuantity')->nullable();
+            $table->double('realPlasticQuantity')->nullable();
+            $table->double('realPaperQuantity')->nullable();
+            $table->double('realGlassQuantity')->nullable();
+            $table->double('realMetalQuantity')->nullable();
+            $table->double('realElectronicQuantity')->nullable();
 
             $table->double('expectedOrganicQuantity');
             $table->double('expectedPlasticQuantity');

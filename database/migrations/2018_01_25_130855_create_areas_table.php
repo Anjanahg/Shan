@@ -17,10 +17,10 @@ class CreateAreasTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->integer('collectorId');
-            $table->string('collectorname');
+
 
             $table->string('areaName');
-            $table->string('address');
+
 
         });
     }

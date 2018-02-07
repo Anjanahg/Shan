@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DogFood;
 use Illuminate\Http\Request;
 use App\orderRequest;
 use DB;
@@ -32,7 +33,7 @@ class RequestController extends Controller
              ]);*/
 
 
-        error_log($request->input('areaId'));
+
         $table=new orderRequest();
         $table->expectedOrganicQuantity=$request->input('v1');
         $table->expectedPlasticQuantity=$request->input('v2');
@@ -55,7 +56,29 @@ class RequestController extends Controller
 
     }
 
-    function previousState(Request $request){
+
+    function sendDogFoodRequest(Request $request){
+
+
+        $cDate= date('Y-m-d H:i:s');
+
+
+
+        $table=new DogFood();
+        $table->expectedDogFoodQuantity=$request->input('v1');
+
+        $table->areaId=$request->input('areaId');
+        $table->requestedDate=$cDate;
+        $table->state=1;
+        $table->uId=$request->input('uId');
+        $table->save();
+
+        return response()->json([
+            'error'=>false,
+            'message'=>"Success!"
+        ]);
+
+
 
     }
 
@@ -66,6 +89,20 @@ class RequestController extends Controller
 
         $details=DB::table('order_requests')
             ->select('order_requests.requestedDate','order_requests.id')
+            ->where('uId','=',$userId)
+            ->get();
+        echo $details;
+
+    }
+
+
+
+
+    function displayDogFoodRequest(Request $request){
+        $userId=$request->input('uId');
+
+        $details=DB::table('dog_foods')
+            ->select('dog_foods.requestedDate','dog_foods.id')
             ->where('uId','=',$userId)
             ->get();
         echo $details;
@@ -97,4 +134,34 @@ class RequestController extends Controller
         echo $details;
 
     }
+
+
+    function DogFoodlistItemClick(Request $request){
+
+        $id=$request->input('id');
+
+
+        $details=DB::table('dog_foods')
+            ->select('dog_foods.realDogFoodQuantity',
+
+                'dog_foods.state',
+                'dog_foods.expectedDogFoodQuantity')
+            ->where('id','=',$id)
+            ->get();
+        echo $details;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

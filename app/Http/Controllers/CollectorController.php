@@ -53,7 +53,7 @@ if(!$cn->isEmpty()&&!$password->isEmpty()){
 
         $cId = $request->cId;
 
-        error_log($cId);
+
         $areaIdArray = DB::table('collectors')
             ->select('collectors.areaId')
             ->where('id', '=', $cId)
@@ -66,6 +66,28 @@ if(!$cn->isEmpty()&&!$password->isEmpty()){
        return $Lplaces;
 
     }
+
+
+    function sendDogFoodLocations(Request $request)
+
+    {
+
+        $cId = $request->cId;
+
+
+        $areaIdArray = DB::table('collectors')
+            ->select('collectors.areaId')
+            ->where('id', '=', $cId)
+            ->get();
+        $areaId= object_get($areaIdArray[0],"areaId",null);
+
+
+        $Lplaces = DB::select("SELECT `dog_foods`.`id`,`users`.`Lplace` FROM `dog_foods`,`users` WHERE `state`=1 AND `dog_foods`.`areaId`=" . $areaId . " AND `dog_foods`.`uId`=`users`.`id`");
+
+        return $Lplaces;
+
+    }
+
 
 
 
@@ -93,6 +115,36 @@ if(!$cn->isEmpty()&&!$password->isEmpty()){
                 'realGlassQuantity'=>$glass,
                 'realMetalQuantity'=>$metal,
                 'realElectronicQuantity'=>$electronic,
+                'state'=>0]);
+
+        return response()->json([
+            'error'=>false,
+            'message'=>"Success!"
+        ]);
+
+
+
+
+
+
+
+    }
+
+
+
+    function collectorDogFoodSend(Request $request)
+
+    {
+
+        $realDogFoodQuantity = $request->realDogFoodQuantity;
+
+        $requestId = $request->requestId;
+
+
+        DB::table('dog_foods')
+            ->where('id', $requestId)
+            ->update([
+                'realDogFoodQuantity' => $realDogFoodQuantity,
                 'state'=>0]);
 
         return response()->json([

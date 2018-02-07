@@ -19,7 +19,8 @@ class CreateComplainsTable extends Migration
             $table->date('date');
             $table->integer('uId');
             $table->string('description');
-            $table->string('reply');
+            $table->string('reply')->nullable();
+            $table->integer('state');
         });
     }
 

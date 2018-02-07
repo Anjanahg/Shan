@@ -23,21 +23,41 @@ Route::post('/register','UserController@Register');
 Route::post('/spinner','UserController@Spinner');
 
 Route::post('/login','UserController@Login');
+
+
+
+
+
+
 Route::post('/send','RequestController@sendRequest');
 
 Route::post('/display','RequestController@displayRequest');
 
+Route::post('/displayDogFoodRequest','RequestController@displayDogFoodRequest');
+
 Route::post('/itemClick','RequestController@listItemClick');
 
-Route::post('/collectorLogin','CollectorController@CollectorLogin');
+Route::post('/dogFooditemClick','RequestController@DogFoodlistItemClick');
 
-Route::post('/getLplaces','CollectorController@Lplaces');
+Route::post('/sendDogFood','RequestController@sendDogFoodRequest');
+
+
+
+
+
+Route::post('/collectorLogin','CollectorController@CollectorLogin');
 
 Route::post('/collectorLogin','CollectorController@Login');
 
 Route::post('/getLocations','CollectorController@sendLocations');
 
+Route::post('/getDogFoodLocations','CollectorController@sendDogFoodLocations');
+
 Route::post('/collectorSend','CollectorController@collectorSend');
+
+Route::post('/collectorDogFoodSend','CollectorController@collectorDogFoodSend');
+
+
 
 
 

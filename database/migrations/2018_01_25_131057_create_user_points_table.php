@@ -16,10 +16,11 @@ class CreateUserPointsTable extends Migration
         Schema::create('user_points', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string('category');
+
             $table->integer('uId');
-            $table->integer('oId');
-            $table->date('date');
+            $table->integer('requestId');
+            $table->double('points');
+
         });
     }
 
