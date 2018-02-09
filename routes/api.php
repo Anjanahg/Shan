@@ -24,6 +24,11 @@ Route::post('/spinner','UserController@Spinner');
 
 Route::post('/login','UserController@Login');
 
+Route::post('/getUserName','UserController@GetUsername');
+
+Route::post('/viewProfile','UserController@ViewProfile');
+
+Route::post('/viewPoints','UserController@ViewPoints');
 
 
 
@@ -56,6 +61,10 @@ Route::post('/getDogFoodLocations','CollectorController@sendDogFoodLocations');
 Route::post('/collectorSend','CollectorController@collectorSend');
 
 Route::post('/collectorDogFoodSend','CollectorController@collectorDogFoodSend');
+
+Route::post('/pointsRedeem','CollectorController@PointsRedeem');
+
+
 
 
 

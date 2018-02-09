@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 
 use App\User;
+use App\UserPointsRedeem;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -78,7 +79,17 @@ class UserController extends Controller
                     ->where('email','=',$email)
                     ->get();
 
-                //echo $uId;
+
+                //-------------------------------------------
+                $table=new UserPointsRedeem();
+                $table->uId=object_get($uId[0],"id",null);
+                $table->totalPoints=0;
+                $table->remaining=0;
+                $table->redeem=0;
+                $table->save();
+
+
+
 
 
                 return response()->json([
@@ -93,6 +104,12 @@ class UserController extends Controller
                 ]);
             }
         }
+
+
+
+
+
+
     }
 
     function Login(Request $request){
@@ -132,6 +149,71 @@ class UserController extends Controller
               ->orderBy('areaName')
               ->get();
           echo $details;
+
+    }
+
+    function GetUsername(Request $request){
+        $uId=$request->uId;
+
+        $name=DB::table('users')
+            ->select('users.fullname')
+            ->where('id','=',$uId)
+            ->get();
+
+        echo $name;
+
+
+    }
+
+
+    function ViewProfile(Request $request){
+        $uId=$request->uId;
+
+        $details=DB::table('users')
+            ->select('users.fullname','users.mobileno','users.email','users.address')
+            ->where('id','=',$uId)
+            ->get();
+
+        echo $details;
+
+    }
+
+    function ViewPoints(Request $request){
+        $uId=$request->uId;
+
+        $points=DB::table('user_points_redeems')
+            ->select('user_points_redeems.totalPoints')
+            ->where('uId','=',$uId)
+            ->get();
+
+        $pointvalue=DB::table('manage_points')
+            ->select('manage_points.value')
+            ->where('category','=',"points")
+            ->get();
+        $totalRupees=(double)object_get($points[0],"totalPoints",null)*(double)object_get($pointvalue[0],"value",null);
+
+        $remaining=DB::table('user_points_redeems')
+            ->select('user_points_redeems.remaining')
+            ->where('uId','=',$uId)
+            ->get();
+        $fremaining=object_get($remaining[0],"remaining",null)*(double)object_get($pointvalue[0],"value",null);
+
+
+        $redeem=DB::table('user_points_redeems')
+            ->select('user_points_redeems.redeem')
+            ->where('uId','=',$uId)
+            ->get();
+
+        $fredeem=object_get($redeem[0],"redeem",null)*(double)object_get($pointvalue[0],"value",null);
+
+
+        return response()->json([
+            'totalRupees'=>$totalRupees,
+            'remaining'=>$fremaining,
+            'redeem'=>$fredeem
+        ]);
+
+
 
     }
 }

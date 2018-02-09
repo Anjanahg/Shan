@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ManagePoints;
+use App\userPoints;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
@@ -117,14 +119,101 @@ if(!$cn->isEmpty()&&!$password->isEmpty()){
                 'realElectronicQuantity'=>$electronic,
                 'state'=>0]);
 
+
+
+//points Calculation-----------------------------------------------------------------
+        $organicPoints= DB::table('manage_points')
+            ->select('manage_points.value')
+            ->where('id', '=', '1')
+            ->get();
+
+        $plasticPoints= DB::table('manage_points')
+            ->select('manage_points.value')
+            ->where('id', '=', '2')
+            ->get();
+
+        $paperPoints= DB::table('manage_points')
+            ->select('manage_points.value')
+            ->where('id', '=', '3')
+            ->get();
+
+        $glassPoints= DB::table('manage_points')
+            ->select('manage_points.value')
+            ->where('id', '=', '4')
+            ->get();
+
+        $metalPoints= DB::table('manage_points')
+            ->select('manage_points.value')
+            ->where('id', '=', '5')
+            ->get();
+
+        $electronicPoints= DB::table('manage_points')
+            ->select('manage_points.value')
+            ->where('id', '=', '6')
+            ->get();
+
+        $id= DB::table('order_requests')
+            ->select('order_requests.uId')
+            ->where('id', '=', $requestId)
+            ->get();
+
+        $intOrganicPoints=(int)object_get($organicPoints[0],"value",null);
+        $intPlasticPoints=(int)object_get($plasticPoints[0],"value",null);
+        $intPaperPoints=(int)object_get($paperPoints[0],"value",null);
+        $intGlassPoints=(int)object_get($glassPoints[0],"value",null);
+        $intMetalPoints=(int)object_get($metalPoints[0],"value",null);
+        $intElectronicPoints=(int)object_get($electronicPoints[0],"value",null);
+        $uId=(int)object_get($id[0],"uId",null);
+
+
+
+
+    //-------------------------------------------------
+        $totalOrganicPoints=$intOrganicPoints*$organic;
+        $totalPlasticPoints=$intPlasticPoints*$plastic;
+        $totalPaperPoints=$intPaperPoints*$paper;
+        $totalGlassPoints=$intGlassPoints*$glass;
+        $totalMetalPoints=$intMetalPoints*$metal;
+        $totalElectronicPoints=$intElectronicPoints*$electronic;
+
+        $totalPoints=$totalOrganicPoints+$totalPlasticPoints+$totalPaperPoints+$totalGlassPoints+$totalMetalPoints+$totalElectronicPoints;
+
+
+        $table=new UserPoints();
+        $table->points=$totalPoints;
+        $table->requestId=$requestId;
+
+        $table->uId=$uId;
+        $table->save();
+
+
+
+        //--------------------------------------------------------------------------------
+
+     $currentPoints=DB::table('user_points_redeems')
+         ->select('user_points_redeems.totalPoints')
+         ->where('uId', '=', $uId)
+         ->get();
+
+        $currentRemaining=DB::table('user_points_redeems')
+            ->select('user_points_redeems.remaining')
+            ->where('uId', '=', $uId)
+            ->get();
+
+
+     $newPoints=object_get($currentPoints[0],"totalPoints",null)+$totalPoints;
+     $newRemainingPoints=(double)object_get($currentRemaining[0],"remaining",null)+$totalPoints;
+        DB::table('user_points_redeems')
+            ->where('uId', $uId)
+            ->update([
+                'totalPoints' => $newPoints,
+                'remaining' => $newRemainingPoints,
+                ]);
+
         return response()->json([
             'error'=>false,
             'message'=>"Success!"
         ]);
-
-
-
-
 
 
 
@@ -159,4 +248,51 @@ if(!$cn->isEmpty()&&!$password->isEmpty()){
 
 
     }
+
+
+
+
+
+    function PointsRedeem(Request $request)
+
+    {
+
+        $uId = $request->uId;
+
+        $remaining=DB::table('user_points_redeems')
+            ->select('user_points_redeems.remaining')
+            ->where('uId', '=', $uId)
+            ->get();
+
+        $redeem=DB::table('user_points_redeems')
+            ->select('user_points_redeems.redeem')
+            ->where('uId', '=', $uId)
+            ->get();
+
+        $fremaining=object_get($remaining[0],"remaining",null);
+
+        $fredeem=object_get($redeem[0],"redeem",null);
+
+        $totalRedeem=(double)$fredeem+(double)$fremaining;
+
+        DB::table('user_points_redeems')
+            ->where('uId', '=', $uId)
+            ->update([
+                'redeem' => $totalRedeem,
+                ]);
+
+        DB::table('user_points_redeems')
+            ->where('uId', '=', $uId)
+            ->update([
+                'remaining' => "0",
+            ]);
+
+
+
+
+
+    }
+
+
+
 }

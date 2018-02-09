@@ -43,7 +43,7 @@ class RequestController extends Controller
         $table->expectedElectronicQuantity=$request->input('v6');
         $table->areaId=$request->input('areaId');
         $table->requestedDate=$cDate;
-        $table->state=1;
+        $table->state="1";
         $table->uId=$request->input('uId');
         $table->save();
 
