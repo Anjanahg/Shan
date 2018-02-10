@@ -30,7 +30,11 @@ Route::post('/viewProfile','UserController@ViewProfile');
 
 Route::post('/viewPoints','UserController@ViewPoints');
 
+Route::post('/sendComplain','UserController@SendComplain');
 
+Route::post('/getComplainsList','UserController@ComplainsList');
+
+Route::post('/getComplainDetails','UserController@ComplainDetails');
 
 
 
@@ -63,6 +67,8 @@ Route::post('/collectorSend','CollectorController@collectorSend');
 Route::post('/collectorDogFoodSend','CollectorController@collectorDogFoodSend');
 
 Route::post('/pointsRedeem','CollectorController@PointsRedeem');
+
+
 
 
 

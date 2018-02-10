@@ -16,7 +16,7 @@ class CreateComplainsTable extends Migration
         Schema::create('complains', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->integer('uId');
             $table->string('description');
             $table->string('reply')->nullable();

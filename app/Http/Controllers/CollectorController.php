@@ -216,7 +216,6 @@ if(!$cn->isEmpty()&&!$password->isEmpty()){
         ]);
 
 
-
     }
 
 
