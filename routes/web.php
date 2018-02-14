@@ -61,6 +61,13 @@ Route::get('/totalGarbage','totalGarbageController@totalCollectedGaerbage');
 Route::get('/areaTotalGarbage','totalAreaGarbageController@areaGarbage');
 
 
+//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+Route::get('/managePoints','PointsController@read');
+
+Route::get('managePoints/update','PointsController@update');
+
 
 
 

@@ -250,6 +250,30 @@ if(!$cn->isEmpty()&&!$password->isEmpty()){
 
 
 
+    function  CheckPoints(Request $request){
+
+        $uId = $request->uId;
+
+        $remaining=DB::table('user_points_redeems')
+            ->select('user_points_redeems.remaining')
+            ->where('uId', '=', $uId)
+            ->get();
+
+        $pointValue=DB::table('manage_points')
+            ->select('manage_points.value')
+            ->where('id', '=', 7)
+            ->get();
+
+        $remainingBalance=(double)object_get($remaining[0],"remaining",null)*(double)object_get($pointValue[0],"value",null);
+
+
+        return response()->json([
+            'remainingBalance'=>$remainingBalance
+
+        ]);
+
+    }
+
 
 
     function PointsRedeem(Request $request)

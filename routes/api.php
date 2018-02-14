@@ -68,6 +68,8 @@ Route::post('/collectorDogFoodSend','CollectorController@collectorDogFoodSend');
 
 Route::post('/pointsRedeem','CollectorController@PointsRedeem');
 
+Route::post('/checkPoints','CollectorController@CheckPoints');
+
 
 
 

@@ -11,7 +11,7 @@ use Illuminate\Support\ServiceProvider;
 
 class AreaController extends Controller
 {
-   public function add(Request $request){
+    public function add(Request $request){
 
         $add=new Area;
 

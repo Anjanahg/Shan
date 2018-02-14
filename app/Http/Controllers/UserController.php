@@ -154,7 +154,7 @@ class UserController extends Controller
         $uId = $request->uId;
 
         $details = DB::table('users')
-            ->select('users.fullname', 'users.mobileno', 'users.email', 'users.address')
+            ->select('users.fullname', 'users.mobileno', 'users.email', 'users.address','users.id')
             ->where('id', '=', $uId)
             ->get();
 
@@ -259,7 +259,7 @@ class UserController extends Controller
     function ComplainDetails(Request $request)
     {
         $complainId = $request->complainId;
-        error_log("XXX".$complainId);
+
 
 
 
