@@ -5,6 +5,7 @@ use Illuminate\Contracts\Logging\Log;
 use Validator;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\User;
 use App\UserPointsRedeem;
@@ -36,7 +37,7 @@ class UserController extends Controller
             return response()->json([
                 'error' => TRUE,
                 'errorName' => "Validation failed"
-            ], 401);
+            ]);
         } else {
 
 
@@ -98,25 +99,54 @@ class UserController extends Controller
     function Login(Request $request)
     {
         $email = $request->email;
-        $password = $request->password;
-        $remember = false;
 
-        if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
-            $uId = DB::table('users')
+        $password=($request->password);
+
+
+        $Femail=DB::table('users')
+            ->select('users.email')
+            ->where('email','=',$email)
+            ->get();
+
+        if($Femail->isEmpty()){
+            return response()->json([
+                'error'=>TRUE,
+                'message'=>"Wrong credintials"
+            ]);
+        }
+        $Fpassword=DB::table('users')
+            ->select('users.password')
+            ->where('email','=',$email)
+            ->get();
+
+        $bcrptedpassword=object_get($Fpassword[0],"password",null);
+
+        if(Hash::check($password,$bcrptedpassword)){
+           $passwordState=True;
+    }else{$passwordState=False;};
+
+
+
+
+        if(!$Femail->isEmpty()&&$passwordState){
+            $Id=DB::table('users')
                 ->select('users.id')
-                ->where('email', '=', $email)
+                ->where('email','=',$email)
                 ->get();
-            $fuId = $uId[0];
+            $fuId=$Id[0];
             return response()->json([
                 'error' => FALSE,
                 'uId' => $fuId,
                 'message' => "success",
             ]);
-        } else {
+
+        }
+        else{
+            $passwordState;
 
             return response()->json([
-                'error' => TRUE,
-                'message' => "Wrong credintials"
+                'error'=>TRUE,
+                'message'=>"Wrong credintials"
             ]);
         }
     }

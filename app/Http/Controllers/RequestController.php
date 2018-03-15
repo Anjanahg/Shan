@@ -154,6 +154,10 @@ class RequestController extends Controller
 
 
 
+    public function read(){
+        $read=orderRequest::all();
+        return view('requestcrud', ['read' => $read]);
+    }
 
 
 

@@ -18,14 +18,13 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('home');
 });
-
+Route::post('reg','EmployeeController@regadmin');
+Route::post('/log','EmployeeController@logadmin');
 //Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/home', function () {
-    return view('home');
-});
+
 
   //////////add a new employee//////
 Route::get('/empcrud','EmployeeController@read');
@@ -55,21 +54,45 @@ Route::get('/area/delete/{id}','AreaController@delete');
 ////////update an area////
 Route::get('/area/update/{id}','AreaController@update');
 Route::post('update_data_area','AreaController@update_data_area');
-Route::get('/newUserRegister','reportController@getnewUserRegister');
+
+
+/////graphs////////
+Route::get('/stat','reportController@getnewUserRegister');
 Route::get('/gRequest','gRequestController@getnewRequests');
 Route::get('/totalGarbage','totalGarbageController@totalCollectedGaerbage');
 Route::get('/areaTotalGarbage','totalAreaGarbageController@areaGarbage');
 
 
-//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
+///////update point details///////
 Route::get('/managePoints','PointsController@read');
-
-Route::get('managePoints/update','PointsController@update');
-
-
+Route::get('/points/update/{id}','PointsController@update');
+Route::post('/update_data_points','PointsController@update_data_points');
 
 
 
 
+////////////complains//////////////
+
+
+Route::get('/viewcomp','complainsController@read');
+
+Route::get('/complains/update/{id}','complainsController@update');
+Route::post('/update_data_complains','complainsController@update_data_complains');
+
+/////////view requests///////
+
+Route::get('/requestcrud','RequestController@read');
+
+
+/////////search points///////
+Route::get('/searchpoints', function () {
+    return view('searchpoints');
+});
+
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

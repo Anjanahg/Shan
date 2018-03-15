@@ -19,7 +19,7 @@
 
 
 </head>
-<<body background= "https://st2.depositphotos.com/1144687/11851/i/950/depositphotos_118515154-stock-photo-creative-designer-desktop-with-blank.jpg">
+<body background= "https://st2.depositphotos.com/1144687/11851/i/950/depositphotos_118515154-stock-photo-creative-designer-desktop-with-blank.jpg">
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -33,10 +33,7 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
+                    <h2 style="color: #069">Bin Master</h2>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -48,7 +45,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
-                        {{--@guest
+                        @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
@@ -71,7 +68,7 @@
                                     </li>
                                 </ul>
                             </li>
-                        @endguest--}}
+                        @endguest
                     </ul>
                 </div>
             </div>
@@ -82,5 +79,5 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-</>
+</body>
 </html>
